@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Workspaces">
+    <option name="workspaces">
+      <list>
+        <Workspace>
+          <option name="pinned" value="true" />
+          <option name="name" value="DevWorkspace" />
+          <option name="fileUrls">
+            <list>
+              <option value="file://$PROJECT_DIR$/src/main/java/com/per/dev/DevApplication.java" />
+              <option value="file://$PROJECT_DIR$/src/main/java/com/per/dev/LocaleConfig.java" />
+            </list>
+          </option>
+          <option name="isPinned" value="true" />
+        </Workspace>
+      </list>
+    </option>
+  </component>
+</project>
