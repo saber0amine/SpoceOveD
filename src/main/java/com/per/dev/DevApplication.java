@@ -56,6 +56,7 @@ public class DevApplication {
         return timestamp.format(formatter);
     }
 
+
     public String formatTimestampWithZone(ZonedDateTime timestamp, String zoneId) {
         Locale locale =  LocaleContextHolder.getLocale() ;
 
