@@ -28,20 +28,21 @@ pipeline {
             }
         }
 
-         stage('Run SCA Analysis using Snyk') {
-                steps {
-                    script {
-                        docker.image('snyk_image:latest').inside('-v /var/run/docker.sock:/var/run/docker.sock') {
-                            withCredentials([string(credentialsId: 'SNYK_TOKEN', variable: 'SNYK_TOKEN')]) {
-                                sh '''
-                                snyk auth $SNYK_TOKEN
-                                snyk test
-                                '''
-                            }
-                        }
-                    }
-                }
-            }
+   stage('Run SCA Analysis using Snyk') {
+       steps {
+           withCredentials([string(credentialsId: 'SNYK_TOKEN', variable: 'SNYK_TOKEN')]) {
+               sh '''
+               docker run --rm -v "$(pwd)":/app -v /var/run/docker.sock:/var/run/docker.sock \
+               -e SNYK_TOKEN="$SNYK_TOKEN" \
+               snyk_image:latest \
+               sh -c "snyk auth $SNYK_TOKEN && snyk test /app"
+               '''
+           }
+       }
+   }
+
+
+
         stage('Build') {
             steps {
                 sh 'mvn clean install -e'
