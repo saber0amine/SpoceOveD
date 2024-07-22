@@ -9,7 +9,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                 cleanWs()
+                cleanWs()
                 git branch: params.BRANCH, url: params.REPO_URL
             }
         }
@@ -28,14 +28,22 @@ pipeline {
             }
         }
 
-            stage('Run SCA Analysis using Snyk') {
-                    steps {
-        			withCredentials([string(credentialsId: 'SNYK_TOKEN', variable: 'SNYK_TOKEN')]) {
-        			    sh 'mvn snyk:test -fn'
-        				}
-        			}
+        stage('Run SCA Analysis using Snyk') {
+            agent {
+                docker {
+                    image 'snyk_image:latest'
+                    args '-v /var/run/docker.sock:/var/run/docker.sock'
+                }
             }
-
+            steps {
+                withCredentials([string(credentialsId: 'SNYK_TOKEN', variable: 'SNYK_TOKEN')]) {
+                    sh '''
+                    snyk auth $SNYK_TOKEN
+                    snyk test
+                    '''
+                }
+            }
+        }
 
         stage('Build') {
             steps {
