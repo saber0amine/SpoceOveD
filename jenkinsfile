@@ -9,8 +9,13 @@ pipeline {
                         mvn clean install
                         '''
                         }
-
                 }
+                stage('test') {
+                        steps{
+                            sh 'mvn test'
+                        }
+                }
+
                stage('deploy') {
                         steps{
                         echo 'deploying the application'
