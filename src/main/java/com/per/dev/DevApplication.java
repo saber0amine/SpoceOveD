@@ -6,7 +6,6 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
-import org.springframework.web.HttpRequestHandler;
 import org.springframework.web.bind.annotation.GetMapping;
  import org.springframework.web.bind.annotation.RestController;
 
@@ -36,13 +35,12 @@ public class DevApplication {
     @GetMapping("/")
     public String sayHello( HttpServletRequest httpRequestHandler) {
         Locale locale =  LocaleContextHolder.getLocale() ;
-
         System.out.println(httpRequestHandler.getRequestURI());
         System.out.println(httpRequestHandler.getHeader("Accept-Language"));
 
-        System.out.println(locale.getLanguage(  ) + " |||" + locale.getCountry(  ) + " ||| " +
+     /*   System.out.println(locale.getLanguage(  ) + "|||" + locale.getCountry(  ) + " ||| " +
                 locale.getDisplayCountry(  ) + " ||| " + locale.getDisplayLanguage(  ) + "  |||" + locale.getDisplayName(  )
-                + "  |||" + locale.getISO3Country(  ) + "  |||" + locale.getISO3Language(  ) + " ||| " + locale.getVariant(   )  );
+                + "  |||" + locale.getISO3Country(  ) + "  |||" + locale.getISO3Language(  ) + " ||| " + locale.getVariant(   )  );*/
 
         return messageSource.getMessage("welcome.message", null, locale) ;
     }
@@ -68,15 +66,15 @@ public class DevApplication {
 
         return timestamp.format(formatter);
     }
-    @GetMapping("/myTime") 
+    @GetMapping("/myTime")
     public String  myTime(HttpServletRequest httpRequestHandler) {
         Locale locale =  LocaleContextHolder.getLocale() ;
 
         System.out.println(httpRequestHandler.getRequestURI());
-        System.out.println(locale.getLanguage(  ) + " |||" + locale.getCountry(  ) + " ||| " +
+   /*     System.out.println(locale.getLanguage(  ) + " |||" + locale.getCountry(  ) + " ||| " +
                 locale.getDisplayCountry(  ) + " ||| " + locale.getDisplayLanguage(  ) + "  |||" + locale.getDisplayName(  )
-                + "  |||" + locale.getISO3Country(  ) + "  |||" + locale.getISO3Language(  ) + " ||| " + locale.getVariant(   )  );
-        String timezone = localeToTimezoneMap.getOrDefault(locale, "UTC"); // Default to UTC if mapping not found
+                + "  |||" + locale.getISO3Country(  ) + "  |||" + locale.getISO3Language(  ) + " ||| " + locale.getVariant(   )  );*/
+        String timezone = localeToTimezoneMap.getOrDefault(locale, "UTC");
         System.out.println(httpRequestHandler.getHeader("Accept-Language"));
         ZonedDateTime now = ZonedDateTime.now() ;
         //LocalDateTime now = LocalDateTime.now() ;
