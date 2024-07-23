@@ -36,14 +36,20 @@ pipeline {
                     echo "Workspace contents:"
                     ls -la $WORKSPACE
 
-                    # Run Snyk directly with increased memory
-                    docker run --rm -v "$WORKSPACE":/app -e SNYK_TOKEN="$SNYK_TOKEN" --memory=2g snyk_image:latest sh -c "
+                    # Run Snyk with increased memory and timeout
+                    docker run --rm -v "$WORKSPACE":/app \
+                               -e SNYK_TOKEN="$SNYK_TOKEN" \
+                               --memory=4g \
+                               --memory-swap=4g \
+                               --cpus=2 \
+                               --timeout=30m \
+                               snyk_image:latest sh -c "
                         echo 'Snyk version:' && snyk --version &&
                         echo 'Authenticating Snyk...' &&
                         snyk auth $SNYK_TOKEN &&
                         echo 'Running Snyk test...' &&
                         cd /app &&
-                        snyk test --debug
+                        snyk test --debug --all-projects
                     "
 
                     echo "Snyk analysis completed."
