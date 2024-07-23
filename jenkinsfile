@@ -28,24 +28,24 @@ pipeline {
             }
         }
 
-        stage('Run SCA Analysis using Snyk') {
-            steps {
-                script {
-                    docker.image('snyk_image:latest').inside() {
-                        withCredentials([string(credentialsId: 'SNYK_TOKEN', variable: 'SNYK_TOKEN')]) {
-                            sh '''
-                            echo "Current directory: $(pwd)"
-                            ls -la
-                            snyk auth $SNYK_TOKEN
-                            chown jenkins:jenkins mvnw
-                              ls -la
-                             snyk test
-                            '''
-                        }
-                    }
+stage('Run SCA Analysis using Snyk') {
+    steps {
+        script {
+            docker.image('snyk_image:latest').inside('--entrypoint=') {
+                withCredentials([string(credentialsId: 'SNYK_TOKEN', variable: 'SNYK_TOKEN')]) {
+                    sh '''
+                    echo "Current directory: $(pwd)"
+                    ls -la
+                    snyk auth $SNYK_TOKEN
+                    chmod +x mvnw
+                    export PATH=$PATH:/usr/share/maven/bin
+                    snyk test
+                    '''
                 }
             }
         }
+    }
+}
 
 //         stage('Build') {
 //             steps {
