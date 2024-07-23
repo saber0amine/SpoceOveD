@@ -36,10 +36,10 @@ pipeline {
                             sh '''
                             echo "Current directory: $(pwd)"
                             ls -la
-                            auth $SNYK_TOKEN
+                            snyk auth $SNYK_TOKEN
                             chown jenkins:jenkins mvnw
                               ls -la
-                             test
+                             snyk test
                             '''
                         }
                     }
