@@ -38,6 +38,7 @@ pipeline {
                             ls -la
                             snyk auth $SNYK_TOKEN
                             chown jenkins:jenkins mvnw
+                              ls -la
                              snyk test
                             '''
                         }
