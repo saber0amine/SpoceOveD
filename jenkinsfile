@@ -37,8 +37,9 @@ pipeline {
                             echo "Current directory: $(pwd)"
                             ls -la
                             snyk auth $SNYK_TOKEN
-                             chmod +x  ./mvnw
-                            snyk test
+                             apt-get install maven
+                             chmod +x maven
+                              snyk test
                             '''
                         }
                     }
