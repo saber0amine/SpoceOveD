@@ -28,22 +28,34 @@ pipeline {
             }
         }
 
-       stage('Run SCA Analysis using Snyk') {
-             agent {
-                 docker {
-                     image 'snyk_image:latest'
-                     args '--user root'
-                 }
-             }
-             steps {
-                 withCredentials([string(credentialsId: 'SNYK_TOKEN', variable: 'SNYK_TOKEN')]) {
-                     sh '''
-                     snyk auth $SNYK_TOKEN
-                     snyk test --all-projects
-                     '''
-                 }
-             }
-         }
+        stage('test docker') {
+            agent {
+                    docker ( image 'alpine')
+            }
+            steps {
+            sh 'HELLO FROM DOCKER AGENT '
+                sh 'apk add --no-cache curl'
+                sh 'curl -v https://www.google.com'
+            }
+
+        }
+
+//        stage('Run SCA Analysis using Snyk') {
+//              agent {
+//                  docker {
+//                      image 'snyk_image:latest'
+//                      args '--user root'
+//                  }
+//              }
+//              steps {
+//                  withCredentials([string(credentialsId: 'SNYK_TOKEN', variable: 'SNYK_TOKEN')]) {
+//                      sh '''
+//                      snyk auth $SNYK_TOKEN
+//                      snyk test --all-projects
+//                      '''
+//                  }
+//              }
+//          }
 
 
 
