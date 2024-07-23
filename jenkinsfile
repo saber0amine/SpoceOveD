@@ -67,9 +67,7 @@ stage('Run SCA Analysis using Snyk') {
    }
 
     post {
-        always {
-            cleanWs()
-        }
+
         failure {
             sh '''
           echo "Recent Docker container logs:"
