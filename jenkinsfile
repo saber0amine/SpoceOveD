@@ -35,11 +35,17 @@ pipeline {
                     # Remove any existing snyk_container
                     docker rm -f snyk_container || true
 
-                    # Start a new Snyk container
-                    docker run -d --name snyk_container -v "$WORKSPACE":/app snyk_image:latest tail -f /dev/null
+                    # Start a new Snyk container with increased memory limit
+                    docker run -d --name snyk_container -m 4g -v "$WORKSPACE":/app snyk_image:latest tail -f /dev/null
 
-                    # Run Snyk commands
-                    docker exec -i snyk_container /bin/sh -c "snyk auth $SNYK_TOKEN && cd /app && snyk test"
+                    # Print container info for debugging
+                    docker inspect snyk_container
+
+                    # Run Snyk commands with increased logging
+                    docker exec -i snyk_container /bin/sh -c "snyk auth $SNYK_TOKEN && cd /app && snyk test --debug"
+
+                    # Print container logs
+                    docker logs snyk_container
 
                     # Remove the Snyk container
                     docker rm -f snyk_container
@@ -70,6 +76,15 @@ pipeline {
     post {
         always {
             cleanWs()
+        }
+        failure {
+            sh '''
+            # Print system resource usage
+            echo "System memory usage:"
+            free -m
+            echo "Disk usage:"
+            df -h
+            '''
         }
     }
 }
