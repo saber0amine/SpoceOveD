@@ -30,7 +30,7 @@ pipeline {
 
         stage('test docker') {
             agent {
-                    docker ( image 'alpine')
+                    docker { image 'alpine' }
             }
             steps {
             sh 'HELLO FROM DOCKER AGENT '
