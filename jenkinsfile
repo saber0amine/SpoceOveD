@@ -38,7 +38,7 @@ pipeline {
                             ls -la
                             snyk auth $SNYK_TOKEN
                              chmod +x  mvnw
-                            snyk test || true
+                            snyk test  -d || true
                             '''
                         }
                     }
