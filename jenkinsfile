@@ -28,24 +28,27 @@ pipeline {
             }
         }
 
-         stage('Run SCA Analysis using Snyk') {
-             steps {
-                    sh '''
-                     ls -la
-                     chmod +x mvnw
-                      ls -la
-                      CURRENT_DIR = $(pwd)
-                      echo $CURRENT_DIR
-                    '''
-                    dir("$CURRENT_DIR"){
-                     snykSecurity(
-                         snykInstallation: 'snyk',
-                         snykTokenId: 'ee261c3f-bb56-4dc9-8d04-95b5858fd00d' ,
-                         failOnIssues: false,
-                     )
-                  }
-             }
- }
+stage('Run SCA Analysis using Snyk') {
+            steps {
+                sh '''
+                ls -la
+                chmod +x mvnw
+                ls -la
+                CURRENT_DIR=$(pwd)
+                echo $CURRENT_DIR
+                '''
+                script {
+                    def currentDir = sh(script: 'pwd', returnStdout: true).trim()
+                    dir(currentDir) {
+                        snykSecurity(
+                            snykInstallation: 'snyk',
+                            snykTokenId: 'ee261c3f-bb56-4dc9-8d04-95b5858fd00d',
+                            failOnIssues: false
+                        )
+                    }
+                }
+            }
+        }
 //         stage('Build') {
 //             steps {
 //                 sh 'mvn clean install -e'
