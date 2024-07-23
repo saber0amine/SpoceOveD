@@ -32,7 +32,17 @@ pipeline {
             steps {
                 withCredentials([string(credentialsId: 'SNYK_TOKEN', variable: 'SNYK_TOKEN')]) {
                     sh '''
-                    docker exec -i snyk_container /bin/sh -c "snyk auth $SNYK_TOKEN && snyk test /app"
+                    # Remove any existing snyk_container
+                    docker rm -f snyk_container || true
+
+                    # Start a new Snyk container
+                    docker run -d --name snyk_container -v "$WORKSPACE":/app snyk_image:latest tail -f /dev/null
+
+                    # Run Snyk commands
+                    docker exec -i snyk_container /bin/sh -c "snyk auth $SNYK_TOKEN && cd /app && snyk test"
+
+                    # Remove the Snyk container
+                    docker rm -f snyk_container
                     '''
                 }
             }
