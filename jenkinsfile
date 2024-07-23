@@ -28,25 +28,19 @@ pipeline {
             }
         }
 
-stage('Run SCA Analysis using Snyk') {
-    steps {
-        script {
-            docker.image('snyk_image:latest').inside('--entrypoint=') {
-                withCredentials([string(credentialsId: 'SNYK_TOKEN', variable: 'SNYK_TOKEN')]) {
-                    sh '''
-                       pwd
-                       echo "Current directory: $(pwd)"
-                       ls -la
-                       snyk auth $SNYK_TOKEN
-                       chmod +x "/var/jenkins_home/workspace/Spring boot Mono@2/mvnw"
-                       "/var/jenkins_home/workspace/Spring boot Mono@2/mvnw" test
-                    '''
-                }
-            }
-        }
-    }
-}
-
+         stage('Run SCA Analysis using Snyk') {
+             steps {
+                 withCredentials([string(credentialsId: 'SNYK_TOKEN', variable: 'SNYK_TOKEN')]) {
+                     snykSecurity(
+                         snykInstallation: 'snyk',
+                         snykTokenId: 'SNYK_TOKEN',
+                         failOnIssues: false,
+                         projectName: 'Spring boot Mono',
+                         additionalArguments: '--all-projects'
+                     )
+                 }
+             }
+ }
 //         stage('Build') {
 //             steps {
 //                 sh 'mvn clean install -e'
