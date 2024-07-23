@@ -37,8 +37,9 @@ pipeline {
                             echo "Current directory: $(pwd)"
                             ls -la
                             snyk auth $SNYK_TOKEN
-
-                              snyk test
+                            chown jenkins:jenkins ./mvnw
+                            chmod +x ./mvnw
+                             snyk test
                             '''
                         }
                     }
