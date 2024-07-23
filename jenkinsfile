@@ -30,15 +30,14 @@ pipeline {
 
          stage('Run SCA Analysis using Snyk') {
              steps {
-                 withCredentials([string(credentialsId: 'SNYK_TOKEN', variable: 'SNYK_TOKEN')]) {
                      snykSecurity(
                          snykInstallation: 'snyk',
-                         snykTokenId: 'SNYK_TOKEN',
+                         snykTokenId: 'ee261c3f-bb56-4dc9-8d04-95b5858fd00d' ,
                          failOnIssues: false,
                          projectName: 'Spring boot Mono',
                          additionalArguments: '--all-projects'
                      )
-                 }
+
              }
  }
 //         stage('Build') {
