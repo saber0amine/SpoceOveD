@@ -33,7 +33,7 @@ pipeline {
                     sh '''
                      ls -la  \
                      chmod +x mvnw    \
-                       ls -la
+                      ls -la
                     '''
                      snykSecurity(
                          snykInstallation: 'snyk',
