@@ -30,11 +30,8 @@ pipeline {
 
        stage('Run SCA Analysis using Snyk') {
              agent {
-                 docker {
-                     image 'snyk_image:latest'
-                     args '--user root'
-                 }
-             }
+        label 'snyk_agent'
+                             }
              steps {
                  withCredentials([string(credentialsId: 'SNYK_TOKEN', variable: 'SNYK_TOKEN')]) {
                      sh '''
