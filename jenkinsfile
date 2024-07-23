@@ -38,8 +38,8 @@ stage('Run SCA Analysis using Snyk') {
                        echo "Current directory: $(pwd)"
                        ls -la
                        snyk auth $SNYK_TOKEN
-                       chmod +x /var/jenkins_home/workspace/Spring boot Mono@2/mvnw  # Set executable permission (if needed)
-                       /var/jenkins_home/workspace/Spring boot Mono@2/mvnw test
+                       chmod +x "/var/jenkins_home/workspace/Spring boot Mono@2/mvnw"
+                       "/var/jenkins_home/workspace/Spring boot Mono@2/mvnw" test
                     '''
                 }
             }
