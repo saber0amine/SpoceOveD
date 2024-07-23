@@ -31,15 +31,15 @@ pipeline {
         stage('Run SCA Analysis using Snyk') {
             steps {
                 script {
-                    docker.image('snyk_image:latest').inside('--entrypoint=""') {
+                    docker.image('snyk_image:latest').inside() {
                         withCredentials([string(credentialsId: 'SNYK_TOKEN', variable: 'SNYK_TOKEN')]) {
                             sh '''
                             echo "Current directory: $(pwd)"
                             ls -la
-                            snyk auth $SNYK_TOKEN
+                            auth $SNYK_TOKEN
                             chown jenkins:jenkins mvnw
                               ls -la
-                             snyk test
+                             test
                             '''
                         }
                     }
