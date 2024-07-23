@@ -36,7 +36,7 @@ pipeline {
                     docker rm -f snyk_container || true
 
                     # Start a new Snyk container with increased memory limit
-                    docker run -d --name snyk_container -m 4g -v "$WORKSPACE":/app snyk_image:latest tail -f /dev/null
+                    docker run -d --name snyk_container -m 1g -v "$WORKSPACE":/app snyk_image:latest tail -f /dev/null
 
                     # Print container info for debugging
                     docker inspect snyk_container
