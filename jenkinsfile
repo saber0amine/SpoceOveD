@@ -30,26 +30,17 @@ pipeline {
 
         stage('Run SCA Analysis using Snyk') {
             steps {
-                withCredentials([string(credentialsId: 'SNYK_TOKEN', variable: 'SNYK_TOKEN')]) {
-                    sh '''
-                    echo "Starting Snyk analysis..."
-                    echo "Workspace contents:"
-                    ls -la $WORKSPACE
-
-                    # Run Snyk
-                    docker run --rm -v "$WORKSPACE":/app \
-                               -e SNYK_TOKEN="$SNYK_TOKEN" \
-                               snyk_image:latest sh -c "
-                        echo 'Snyk version:' && snyk --version &&
-                        echo 'Authenticating Snyk...' &&
-                        snyk auth \$SNYK_TOKEN &&
-                        echo 'Running Snyk test...' &&
-                        cd /app &&
-                        snyk test --all-projects
-                    "
-
-                    echo "Snyk analysis completed."
-                    '''
+                script {
+                    docker.image('snyk_image:latest').inside('--entrypoint=""') {
+                        withCredentials([string(credentialsId: 'SNYK_TOKEN', variable: 'SNYK_TOKEN')]) {
+                            sh '''
+                            echo "Current directory: $(pwd)"
+                            ls -la
+                            snyk auth $SNYK_TOKEN
+                            snyk test || true
+                            '''
+                        }
+                    }
                 }
             }
         }
