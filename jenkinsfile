@@ -28,26 +28,11 @@ pipeline {
             }
         }
 
- stage('Run SCA Analysis using Snyk') {
-            steps {
-                sh '''
-                ls -la
-                chmod +x mvnw
-                ls -la
-                CURRENT_DIR=$(pwd)
-                echo $CURRENT_DIR
-                '''
-                script {
-                    def currentDir = sh(script: 'pwd', returnStdout: true).trim()
-                    dir(currentDir) {
-                        sh '''
-                        snyk test --json --severity-threshold=low
-                        '''
-                    }
-                }
-            }
+stage('Run SCA Analysis using Snyk') {
+           withCredentials([string(credentialsId: 'SNYK_TOKEN', variable: 'SNYK_TOKEN')]) {
+           			    sh 'mvn snyk:test -fn'
+           				}
         }
-
 //         stage('Build') {
 //             steps {
 //                 sh 'mvn clean install -e'
