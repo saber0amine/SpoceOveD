@@ -30,6 +30,7 @@ pipeline {
 
          stage('Run SCA Analysis using Snyk') {
              steps {
+                    sh 'chmod +x mvnw'
                      snykSecurity(
                          snykInstallation: 'snyk',
                          snykTokenId: 'ee261c3f-bb56-4dc9-8d04-95b5858fd00d' ,
