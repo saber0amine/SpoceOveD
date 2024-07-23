@@ -34,7 +34,10 @@ pipeline {
                     docker.image('snyk_image:latest').inside('--entrypoint=""') {
                         withCredentials([string(credentialsId: 'SNYK_TOKEN', variable: 'SNYK_TOKEN')]) {
                             sh '''
+                            echo "Current directory: $(pwd)"
+                            ls -la
                             snyk auth $SNYK_TOKEN
+                             chmod +x  ./mvnw
                             snyk test
                             '''
                         }
