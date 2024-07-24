@@ -40,7 +40,7 @@ stage('Run SCA Analysis using Snyk') {
 	    whoami
 	    pwd 
 	    env 
-	    docker info
+	    ldd --version
 	    snyk --version	    
             snyk auth $SNYK_TOKEN
             snyk test -d
