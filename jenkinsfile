@@ -37,8 +37,10 @@ stage('Run SCA Analysis using Snyk') {
     steps {
         withCredentials([string(credentialsId: 'SNYK_TOKEN', variable: 'SNYK_TOKEN')]) {
             sh '''
+	    ls -la
+	    ping google.com
             snyk auth $SNYK_TOKEN
-            snyk test --all-projects
+            snyk test -d
             '''
         }
     }
