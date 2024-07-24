@@ -37,8 +37,11 @@ stage('Run SCA Analysis using Snyk') {
     steps {
         withCredentials([string(credentialsId: 'SNYK_TOKEN', variable: 'SNYK_TOKEN')]) {
             sh '''
-	    ls -la
-	    ping google.com
+	    whoami
+	    pwd 
+	    env 
+	    docker info
+	    snyk --version	    
             snyk auth $SNYK_TOKEN
             snyk test -d
             '''
@@ -64,13 +67,20 @@ stage('Run SCA Analysis using Snyk') {
 //         }
    }
 
-    post {
-
-        failure {
-            sh '''
-          echo "Recent Docker container logs:"
-            docker logs $(docker ps -aq | head -n 1)
-            '''
-        }
+post {
+    failure {
+        sh '''
+        echo "All Docker containers:"
+        docker ps -a
+        echo "Recent Docker container logs:"
+        CONTAINER_ID=$(docker ps -aq | head -n 1)
+        if [ -n "$CONTAINER_ID" ]; then
+            docker logs $CONTAINER_ID
+        else
+            echo "No containers found"
+        fi
+        '''
     }
+}
+
 }
