@@ -37,14 +37,9 @@ stage('Run SCA Analysis using Snyk') {
     steps {
 	sh 'chmod +x ./mvnw'
         withCredentials([string(credentialsId: 'SNYK_TOKEN', variable: 'SNYK_TOKEN')]) {
-            sh '''
-	    whoami
-	    pwd 
-	    env 
-	    ldd --version
-	    snyk --version	    
+            sh '''	    
             snyk auth $SNYK_TOKEN
-            snyk test -d
+            snyk monitor --all-projects
             '''
         }
     }
